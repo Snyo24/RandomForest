@@ -1,46 +1,86 @@
+/*
+ * main.cpp
+ *
+ * @author: Snyo Kang
+ * @date: 2016-01-14 ~ 
+ * main
+ */
+
 #include "RandomForest.h"
 
 #include <iostream>
+#include <sstream>
+#include <fstream>
 #include <vector>
+
+#include <opencv2/opencv.hpp>
 
 using namespace std;
 using namespace rf;
 
+using namespace cv;
+
+void input(vector<Pair>& data) {
+	ifstream ifs("./train/training.data");
+
+	int c = 1;
+	while(!ifs.eof()) {
+		string STRING;
+		getline(ifs, STRING);
+		stringstream ss(STRING);
+
+		string token;
+		bool y = false;
+		Pair x;
+		while(getline(ss, token, ',')) {
+			if(!y)
+				x.second = atoi(token.c_str());
+			else
+				x.first.push_back(atof(token.c_str()));
+			y = true;
+		}
+		data.push_back(x);
+	}
+}
+
 int main() {
-	Node n;
-	Tree t;
-	t.root = n;
+	vector<Pair> data;
+	input(data);
 
+	Forest f(10, 5);
 
-	const int aa[] = {1};
-	vector<float> v(aa, aa+1);
-	const int bb[] = {1,3};
-	vector<float> v2(bb, bb+2);
-	Pair x(v, 0);
-	Pair y(v2, 1);
-	Pair z(v2, 0);
-	Pair a(v, 1);
-	Pair b(v2, 1);
-	Pair c(v, 1);
-	Pair d(v2, 0);
-	Pair e(v, 0);
-	n.push(x);
-	n.push(y);
-	n.push(z);
-	n.push(a);
-	n.push(b);
-	n.push(c);
-	n.push(d);
-	n.push(e);
+	f.train(data);
 
+	Mat img;
+	img = imread("./train/test_image.png");
+	Mat res = img.clone();
+	for (int i=0; i<img.size().height; ++i) {
+		for (int j=0; j<img.size().width; ++j) {
+			Vec3f pix(img.at<Vec3b>(i, j));
+			vector<float> t;
+			t.push_back(pix[0]);
+			t.push_back(pix[0]);
+			t.push_back(pix[0]);
+			t.push_back(pix[0]);
+			t.push_back(pix[0]);
+			t.push_back(pix[1]);
+			t.push_back(pix[1]);
+			t.push_back(pix[1]);
+			t.push_back(pix[1]);
+			t.push_back(pix[1]);
+			t.push_back(pix[2]);
+			t.push_back(pix[2]);
+			t.push_back(pix[2]);
+			t.push_back(pix[2]);
+			t.push_back(pix[2]);
+			res.at<Vec3b>(i,j)[0] = 255*f.test(t);
+			res.at<Vec3b>(i,j)[1] = 255*f.test(t);
+			res.at<Vec3b>(i,j)[2] = 255*f.test(t);
+		}
+	}
+	imshow("f", img);
+	imshow("fff", res);
+	waitKey(0);
 
-
-	cout << n << endl;
-	cout << n.isLeaf() << endl;
-	bool tf[8] = {true, false, true, false, true, true, false, false};
-	cout << n.infoGain(tf) << endl;
-	n.split(tf);
-	cout << n << endl;
-	cout << n.isLeaf() << endl;
 	return 0;
 }
