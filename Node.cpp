@@ -78,19 +78,24 @@ void Node::findBestSplit(bool* bestSplit) {
 		distribution(pixDiff, mean, var);
 		normal_distribution<float> diffDist(mean, var);
 
-		float maxInfoGain = -999;
-		for(int j=0; j<5; ++j) { // Threshold trials
+		float maxInfoGain = -1;
+		for(int j=0; j<3; ++j) { // Threshold trials
 // cout << "	Trial #" << j+1 << endl;
 			float threshold = diffDist(RNG);
 			Criteria crit(i1, i2, threshold);
 			bool split[this->size()];
 			twoPixel(this->content, crit, split);
 			float infoGain = this->infoGain(split);
+// cout << "j: " << j << " " << infoGain << endl;
 			if(maxInfoGain < infoGain) {
 // cout << "	 " << crit << endl;
 // cout << "	 InfoGain: " << maxInfoGain << " -> " << infoGain << endl;
+// cout << *this << endl;
+// for(int kk=0; kk<this->size(); ++kk)
+// cout << split[kk] << " ";
 				maxInfoGain = infoGain;
-				bestSplit = split;
+				for(int k=0; k<this->size(); ++k)
+					bestSplit[k] = split[k];
 				splitCrit = crit;
 			}
 		}

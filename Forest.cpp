@@ -49,7 +49,8 @@ float Forest::test(vector<float> p) {
 	for(vector<Tree*>::iterator it=this->trees.begin(); it!=this->trees.end(); ++it) {
 		++c[(*it)->eval(p)];
 	}
-	return (float)c[maxIdx(c, c+MAX_CLASS)]/this->trees.size();
+	cout << c[0] << endl;
+	return (float)c[0]/this->trees.size();
 }
 
 Forest::~Forest() {

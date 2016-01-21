@@ -43,7 +43,7 @@ void input(vector<Pair>& data) {
 	}
 }
 
-int main() {
+int main(int argc, char** argv) {
 	vector<Pair> data;
 	input(data);
 
@@ -73,14 +73,14 @@ int main() {
 			t.push_back(pix[2]);
 			t.push_back(pix[2]);
 			t.push_back(pix[2]);
-			res.at<Vec3b>(i,j)[0] = 255*f.test(t);
-			res.at<Vec3b>(i,j)[1] = 255*f.test(t);
-			res.at<Vec3b>(i,j)[2] = 255*f.test(t);
+			float cc = f.test(t);
+			res.at<Vec3b>(i,j)[0] = 255*cc;
+			res.at<Vec3b>(i,j)[1] = 255*cc;
+			res.at<Vec3b>(i,j)[2] = 255*cc;
 		}
 	}
 	imshow("f", img);
 	imshow("fff", res);
 	waitKey(0);
-
 	return 0;
 }

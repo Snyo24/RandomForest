@@ -24,7 +24,7 @@ void Tree::train() {
 
 void Tree::train(Node* curr, int depth) {
 	int size = curr->size();
-	if(depth > maxDepth)
+	if(size < 20 && depth > maxDepth)
 		return;
 
 	bool bestSplit[size];

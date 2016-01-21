@@ -48,18 +48,6 @@ namespace rf {
 	// Declaration of class "Node"
 	class Node {
 	 private:
-		Node *left;
-		Node *right;
-		vector<Pair> content;
-		Criteria splitCrit;
-		int rep;
-
-		float infoGain(const bool* l);
-		void split(const bool* l);
-		void findBestSplit(bool* bestSplit);
-		int decide(vector<float> p);
-		void push(Pair x);
-		int dominant();
 
 		// Override <<
 		friend ostream& operator<<(ostream& os, const Node& n) {
@@ -79,6 +67,19 @@ namespace rf {
 		}
 
 	 public:
+		Node *left;
+		Node *right;
+		vector<Pair> content;
+		Criteria splitCrit;
+		int rep;
+
+		float infoGain(const bool* l);
+		void split(const bool* l);
+		void findBestSplit(bool* bestSplit);
+		int decide(vector<float> p);
+		void push(Pair x);
+		int dominant();
+
 		Node();
 		Node(vector<Pair> data);
 		int size();
@@ -144,8 +145,6 @@ namespace rf {
 	}
 
 	inline bool valid(bool* start, bool* end) {
-		if(end-start < 20)
-			return false;
 		int l=0, r=0;
 		for(bool* i=start; i<end; ++i) {
 			l += *i;
