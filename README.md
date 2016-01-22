@@ -1,10 +1,7 @@
-# RandomForest
+# **Snyo**'s Random Forest
 
 
-Snyo's Random Forest
-
-
-Usage
+## Usage
 
 Get data from ./train/training.data
 
