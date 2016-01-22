@@ -18,7 +18,7 @@ using namespace std;
 
 namespace rf {
 	// Constants
-	const int MAX_CLASS = 2;
+	const int MAX_CLASS = 5;
 	const float EPSILON = 0.000001;
 	static mt19937 RNG(time(0));
 
@@ -48,6 +48,19 @@ namespace rf {
 	// Declaration of class "Node"
 	class Node {
 	 private:
+		Node *left;
+		Node *right;
+		vector<Pair> content;
+		Criteria splitCrit;
+		int rep;
+
+		float infoGain(const bool* l);
+		void split(const bool* l);
+		void findBestSplit(bool* bestSplit);
+		int decide(vector<float> p);
+		void push(Pair x);
+		int dominant();
+		// float prob(int c);
 
 		// Override <<
 		friend ostream& operator<<(ostream& os, const Node& n) {
@@ -67,19 +80,6 @@ namespace rf {
 		}
 
 	 public:
-		Node *left;
-		Node *right;
-		vector<Pair> content;
-		Criteria splitCrit;
-		int rep;
-
-		float infoGain(const bool* l);
-		void split(const bool* l);
-		void findBestSplit(bool* bestSplit);
-		int decide(vector<float> p);
-		void push(Pair x);
-		int dominant();
-
 		Node();
 		Node(vector<Pair> data);
 		int size();
@@ -99,11 +99,10 @@ namespace rf {
 	 private:
 		Node *root;
 		int maxDepth;
-		void train();
+		void train(const vector<Pair> data);
 		void train(Node* curr, int depth);
 		int eval(vector<float> p);
 		int eval(Node* curr, vector<float> p);
-		void setData(vector<Pair> data);
 
 		// Override <<
 		friend ostream& operator<<(ostream& os, const Tree& t) {
@@ -155,7 +154,7 @@ namespace rf {
 
 		return true;
 	}
-	
+
 	inline void twoPixel(vector<Pair> data, Criteria crit, bool* result) {
 		for(int i=0; i<data.size(); ++i)
 			result[i] = (data[i].first[crit.idx1]-data[i].first[crit.idx2]) > crit.threshold;

@@ -64,14 +64,14 @@ float Node::infoGain(const bool* l) {
 }
 
 void Node::findBestSplit(bool* bestSplit) {
+	int n = this->size();
 	for(int i=0; i<5; ++i) {
-// cout << "Trial #" << i+1 << endl;
 		int size = (*this)[0].first.size();
 		int i1 = RNG()%size, i2 = RNG()%size;
 		while(i1 == i2) i2 = RNG()%size;
 
 		vector<float> pixDiff; // Two pixel diff values
-		for(int j=0; j<this->size(); ++j)
+		for(int j=0; j<n; ++j)
 			pixDiff.push_back((*this)[j].first[i1] - (*this)[j].first[i2]);
 
 		float mean, var; // Get distribution of pixDiff
@@ -80,21 +80,16 @@ void Node::findBestSplit(bool* bestSplit) {
 
 		float maxInfoGain = -1;
 		for(int j=0; j<3; ++j) { // Threshold trials
-// cout << "	Trial #" << j+1 << endl;
-			float threshold = diffDist(RNG);
+			float threshold = diffDist(RNG); // Random Threshold
+
 			Criteria crit(i1, i2, threshold);
-			bool split[this->size()];
+			bool split[n];
 			twoPixel(this->content, crit, split);
+
 			float infoGain = this->infoGain(split);
-// cout << "j: " << j << " " << infoGain << endl;
 			if(maxInfoGain < infoGain) {
-// cout << "	 " << crit << endl;
-// cout << "	 InfoGain: " << maxInfoGain << " -> " << infoGain << endl;
-// cout << *this << endl;
-// for(int kk=0; kk<this->size(); ++kk)
-// cout << split[kk] << " ";
 				maxInfoGain = infoGain;
-				for(int k=0; k<this->size(); ++k)
+				for(int k=0; k<n; ++k)
 					bestSplit[k] = split[k];
 				splitCrit = crit;
 			}
@@ -103,12 +98,6 @@ void Node::findBestSplit(bool* bestSplit) {
 }
 
 int Node::dominant() {
-// if(this->size() >0) {
-// cout << this->size() << endl;
-// for(int i=0; i<this->size(); ++i)
-// cout << (*this)[i].second << " ";
-// cout << endl;
-// }
 	if(rep >= 0) // Already determined
 		return rep;
 

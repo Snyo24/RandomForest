@@ -39,17 +39,14 @@ void Forest::train(const vector<Pair> data) {
 	for(int i=0; i<this->trees.size(); ++i) {
 		cout << "Training tree #" << i+1 << endl;
 		Tree *tree = trees[i];
-		tree->setData(data);
-		tree->train();
+		tree->train(data);
 	}
 }
 
 float Forest::test(vector<float> p) {
 	int c[MAX_CLASS] = {0};
-	for(vector<Tree*>::iterator it=this->trees.begin(); it!=this->trees.end(); ++it) {
+	for(vector<Tree*>::iterator it=this->trees.begin(); it!=this->trees.end(); ++it) 
 		++c[(*it)->eval(p)];
-	}
-	cout << c[0] << endl;
 	return (float)c[0]/this->trees.size();
 }
 

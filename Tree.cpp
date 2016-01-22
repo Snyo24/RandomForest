@@ -18,13 +18,15 @@ Tree::Tree(int d): maxDepth(d) {
 	this->root = new Node();
 }
 
-void Tree::train() {
+// Train this tree
+void Tree::train(const vector<Pair> data) {
+	this->root = new Node(data);
 	this->train(this->root, 0);
 }
 
 void Tree::train(Node* curr, int depth) {
 	int size = curr->size();
-	if(size < 20 && depth > maxDepth)
+	if(size < 20 || depth > maxDepth)
 		return;
 
 	bool bestSplit[size];
@@ -36,6 +38,7 @@ void Tree::train(Node* curr, int depth) {
 	}
 }
 
+// Test a vector "p"
 int Tree::eval(vector<float> p) {
 	return eval(this->root, p);
 }
@@ -46,10 +49,6 @@ int Tree::eval(Node* curr, vector<float> p) {
 	if(curr->decide(p))
 		return eval(curr->left, p);
 	return eval(curr->right, p);
-}
-
-void Tree::setData(vector<Pair> data) {
-	root = new Node(data);
 }
 
 Tree::~Tree() {
