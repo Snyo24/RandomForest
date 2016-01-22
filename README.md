@@ -6,13 +6,13 @@ Snyo's Random Forest
 
 Usage
 
-./rf 
+Get data from ./train/training.data
 
-	Get data from ./train/training.data
+	> ./rf 
 
-./rf -r [filename]
+Get data from [filename]
 
-	Get data from [filename]
+	> ./rf -r [filename]
 
 
 
