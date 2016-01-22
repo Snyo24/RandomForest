@@ -1,15 +1,15 @@
-# **Snyo**'s Random Forest
+# Snyo's Random Forest
 
 
 ## Usage
 
-Get data from ./train/training.data
+1. Get data from ./train/training.data
 
 	> ./rf 
 
-Get data from [filename]
+2. Get data from [*filename*]
 
-	> ./rf -r [filename]
+	> ./rf -r [*filename*]
 
 
 
